@@ -15,5 +15,5 @@ class Order(db.Model):
     provider_id = Column(Integer, ForeignKey('providers.id'), nullable=False)
     client_id = Column(Integer, ForeignKey('clients.id'), nullable=False)
 
-    products = relationship('products', secondary=order_product,
+    products = relationship('Product', secondary=order_product,
                             backref=backref('orders', uselist=True))
