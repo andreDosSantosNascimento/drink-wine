@@ -14,4 +14,4 @@ class Invoice(db.Model):
     invoice_number = Column(String(100), unique=True)
     order_id = Column(Integer, ForeignKey('orders.id'), unique=True)
 
-    order = relationship('orders', backref=backref('invoices', uselist=False))
+    order = relationship('Order', backref=backref('invoices', uselist=False))
