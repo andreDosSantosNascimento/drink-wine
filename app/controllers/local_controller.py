@@ -11,9 +11,12 @@ def create_country():
         'ddd': data['country_ddd']
     }
 
-    country = country_model.Country(**country_dict)
-    current_app.db.session.add(country)
-    current_app.db.session.commit()
+    try:
+        country = country_model.Country(**country_dict)
+        current_app.db.session.add(country)
+        current_app.db.session.commit()
+    except:
+        return{'msg': 'Country already exists'}
 
     return jsonify(country), 201
 
@@ -21,23 +24,29 @@ def create_country():
 def create_state():
     data = request.json
 
-    country_sigla = data['country_sigla'].upper()
-    country = country_model\
-              .Country\
-              .query\
-              .filter(country_model.Country.sigla == country_sigla)\
-              .first()
+    try:
+        country_sigla = data['country_sigla'].upper()
+        country = country_model\
+                .Country\
+                .query\
+                .filter(country_model.Country.sigla == country_sigla)\
+                .first()        
+        state_sigla = data['state_sigla'].upper()
 
-    state_sigla = data['state_sigla'].upper()
+        state_dict = {
+            'sigla': state_sigla,
+            'id_country': country.id
+        }
+    
+    except:
+        return {'msg': 'Invalid Country'}, 400
 
-    state_dict = {
-        'sigla': state_sigla,
-        'id_country': country.id
-    }
-
-    state = state_model.State(**state_dict)
-    current_app.db.session.add(state)
-    current_app.db.session.commit()
+    try:
+        state = state_model.State(**state_dict)
+        current_app.db.session.add(state)
+        current_app.db.session.commit()
+    except:
+        return{'msg': 'State already exists'}
 
     return jsonify(state), 201
 
@@ -45,14 +54,18 @@ def create_state():
 def create_city():
     data = request.json
 
-    state_sigla = data['state_sigla'].upper()
-    state = state_model\
-              .State\
-              .query\
-              .filter(state_model.State.sigla == state_sigla)\
-              .first()
+    try:
+        state_sigla = data['state_sigla'].upper()
+        state = state_model\
+                .State\
+                .query\
+                .filter(state_model.State.sigla == state_sigla)\
+                .first()
 
-    id_state = state.id
+        id_state = state.id
+    except:
+        return {'msg': 'Invalid State'}, 400
+
     city_ddd = data['city_ddd']
 
     city_dict = {
