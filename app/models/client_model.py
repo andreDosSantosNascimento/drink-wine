@@ -16,4 +16,4 @@ class Client(db.Model):
     cnpj = Column(String(100), nullable=False, unique=True)
     city_id = Column(Integer, ForeignKey('citys.id'), nullable=False)
 
-    city = relationship('citys', backref=backref('client', uselist=False))
+    city = relationship('City', backref=backref('client', uselist=False))
