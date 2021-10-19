@@ -1,14 +1,7 @@
-<<<<<<< HEAD
-from flask import Flask, jsonify, request, current_app
-from app.models import city_model, country_model, state_model
-
-def create_local():
-=======
 from flask import jsonify, request, current_app
 from app.models import city_model, country_model, state_model
 
 def create_country():
->>>>>>> develope
     data = request.json
 
     country_sigla = data['country_sigla'].upper()
@@ -18,25 +11,6 @@ def create_country():
         'ddd': data['country_ddd']
     }
 
-<<<<<<< HEAD
-    country = country_model.Country(**country_dict)
-    current_app.db.session.add(country)
-    current_app.db.session.commit()
-
-    id_country = country.id
-    state_sigla = data['state_sigla'].upper()
-
-    state_dict = {
-        'sigla': state_sigla,
-        'id_country': id_country
-    }
-
-    state = state_model.State(**state_dict)
-    current_app.db.session.add(state)
-    current_app.db.session.commit()
-
-    id_state = state.id
-=======
     try:
         country = country_model.Country(**country_dict)
         current_app.db.session.add(country)
@@ -92,7 +66,6 @@ def create_city():
     except:
         return {'msg': 'Invalid State'}, 400
 
->>>>>>> develope
     city_ddd = data['city_ddd']
 
     city_dict = {
@@ -102,10 +75,6 @@ def create_city():
 
     city = city_model.City(**city_dict)
     current_app.db.session.add(city)
-<<<<<<< HEAD
-    current_app.db.session.commit()
-=======
     current_app.db.session.commit()
 
     return jsonify(city), 201
->>>>>>> develope
