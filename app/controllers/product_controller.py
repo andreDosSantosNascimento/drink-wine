@@ -41,3 +41,13 @@ def delete_product(id: int) -> dict:
         return jsonify(product), 200
     except sqlalchemy.orm.exc.UnmappedInstanceError:
         return {'msg': 'Product Not Found'}, 404
+
+def get_products():
+    products = Product.query.all()
+    return {"data": [{
+        "id": product.id,
+        "name": product.name,
+        "value": product.value,
+        "description": product.description,
+        "expiration_date": product.expiration_date.strftime('%d/%m/%Y')
+    } for product in products]}

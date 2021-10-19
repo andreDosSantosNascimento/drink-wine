@@ -3,8 +3,6 @@ from dataclasses import dataclass
 from app.configs.database import db
 from app.models.provider_product import provider_product
 from sqlalchemy import Column, Date, Float, Integer, String
-from sqlalchemy.orm import backref, relationship
-
 
 @dataclass
 class Product(db.Model):
