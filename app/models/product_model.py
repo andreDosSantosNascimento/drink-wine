@@ -16,5 +16,5 @@ class Product(db.Model):
     description = Column(String(255))
     expiration_date = Column(Date, nullable=False)
 
-    provider = relationship('providers', secondary=provider_product,
-                            backref=backref('products', uselist=True))
+    provider = db.relationship('Provider', secondary=provider_product,
+                            backref=db.backref('products', uselist=True))

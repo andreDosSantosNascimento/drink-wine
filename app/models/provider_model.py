@@ -13,7 +13,7 @@ class Provider(db.Model):
     name = Column(String(255), nullable=False,)
     email = Column(String(100), nullable=False, unique=True)
     phone = Column(String(100), unique=True)
+    country = db.relationship('Country', backref=db.backref('providers'))
     country_id = Column(Integer, ForeignKey('countrys.id'), nullable=False)
     nif = Column(String(9), nullable=False, unique=True)
 
-    country = relationship('countrys', backref=backref('providers'))
