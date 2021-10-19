@@ -7,6 +7,12 @@ from sqlalchemy.orm import backref, relationship
 
 @dataclass
 class Client(db.Model):
+    id:int
+    name:str
+    email:str
+    phone:str
+    cnpj:str
+    
     __tablename__ = 'clients'
 
     id = Column(Integer, primary_key=True)
