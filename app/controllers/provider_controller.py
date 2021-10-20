@@ -24,10 +24,10 @@ def create_provider():
 
     data['country_id'] = country.id
 
+    provider = Provider(**data)
+
     if not country:
         return {'message': 'This country not exists.'}, 400
-
-    provider = Provider(**data)
 
     session.add(provider)
     session.commit()
