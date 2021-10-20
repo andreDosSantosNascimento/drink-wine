@@ -9,7 +9,7 @@ def create_country():
 
     country_dict = {
         'sigla': country_sigla,
-        'ddd': data['country_ddd']
+        'ddd': data['ddd']
     }
 
     try:

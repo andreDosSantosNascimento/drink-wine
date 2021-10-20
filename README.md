@@ -18,7 +18,7 @@ _Cria um País_
 
 ```json
 {
-  "sigla": "BRA",
+  "country_sigla": "BRA",
   "ddd": "+55"
 }
 ```
@@ -29,7 +29,7 @@ _Cria um Estado_
 
 ```json
 {
-  "sigla": "PR",
+  "state_sigla": "PR",
   "country_sigla": "BRA"
 }
 ```
@@ -191,7 +191,7 @@ _Retorna todos os produtos cadastrados, não precisa de corpo e tem o seguinte r
       "name": "Vinho Cinza",
       "value": 550.5,
       "description": "Vinho do Chile Merlot",
-      "expiration_date": "23/02/2029"
+      "expiration_date": "2029/09/20"
     },
     {
       "name": "Vinho Bege",
