@@ -4,14 +4,14 @@ import psycopg2
 import sqlalchemy
 from flask import current_app, jsonify, request
 
-from app.models.erros_model import CityNotRegisteredError, WrongTypeError
+from app.models.error_model import CityNotRegisteredError, InvalidCnpjError, WrongNumberFormatError, WrongTypeError
 
 def create_client() -> dict:
     try:
         data = request.get_json()
-        ddd = data["ddd"]
+        ddd = data["ddd_city"]
         
-        data = {key: data[key] for key in data if key != "ddd"}
+        data = {key: data[key] for key in data if key != "ddd_city"}
         
         city_id =  City.query.filter_by(ddd = ddd).first()
         
@@ -21,9 +21,9 @@ def create_client() -> dict:
         data["city_id"] = city_id.id
 
         client = Client(**data)
-        session = current_app.db.session
+        """session = current_app.db.session
         session.add(client)
-        session.commit()
+        session.commit() """
 
         return jsonify(client), 201
 
@@ -35,6 +35,12 @@ def create_client() -> dict:
         return err.message, 422
 
     except CityNotRegisteredError as err:
+        return err.message, 422
+
+    except InvalidCnpjError as err:
+        return err.message, 422
+    
+    except WrongNumberFormatError as err:
         return err.message, 422
 
 def update_client(id: int) -> dict:

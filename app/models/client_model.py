@@ -1,11 +1,13 @@
 from dataclasses import dataclass
 
 from app.configs.database import db
+
 from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import backref, relationship, validates
 
-from app.models.erros_model import WrongTypeError
+from app.models.error_model import InvalidCnpjError, WrongNumberFormatError, WrongTypeError
 
+import re
 
 @dataclass
 class Client(db.Model):
@@ -34,4 +36,15 @@ class Client(db.Model):
 
         if key == "name":
             value = value.title()
+        
+        if key == "cnpj" and len(value) != 14:
+            raise InvalidCnpjError
+
+        if key == "phone":
+            phone_pattern = "\(\d{2}\)\d{4,5}\-\d{4}"
+            number_format_valid = re.fullmatch(phone_pattern, value)
+            
+            if not number_format_valid:
+                raise WrongNumberFormatError
+
         return value
