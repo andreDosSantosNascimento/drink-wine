@@ -14,3 +14,10 @@ class WrongNumberFormatError(Exception):
     def __init__(self):
         self.message = {"error": "Invalid phone number, only numbers expected!"}
         
+class InvalidEmailError(Exception):
+    def __init__(self):
+        self.message = {"error": "This email is not valid."}
+
+class AlreadyRegisteredError(Exception):
+    def __init__(self, this):
+        self.message = {"error": f"{this} already registered!"}

@@ -5,7 +5,7 @@ from app.configs.database import db
 from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import backref, relationship, validates
 
-from app.models.error_model import InvalidCnpjError, WrongNumberFormatError, WrongTypeError
+from app.models.error_model import InvalidCnpjError, InvalidEmailError, WrongNumberFormatError, WrongTypeError
 
 @dataclass
 class Client(db.Model):
@@ -40,5 +40,8 @@ class Client(db.Model):
 
         if key == "phone" and not value.isnumeric():
             raise WrongNumberFormatError
+        
+        if key == "email" and not "@" in value:
+            raise InvalidEmailError
 
         return value

@@ -4,7 +4,7 @@ import psycopg2
 import sqlalchemy
 from flask import current_app, jsonify, request
 
-from app.models.error_model import CityNotRegisteredError, InvalidCnpjError, WrongNumberFormatError, WrongTypeError
+from app.models.error_model import AlreadyRegisteredError, CityNotRegisteredError, InvalidCnpjError, InvalidEmailError, WrongNumberFormatError, WrongTypeError
 
 def create_client() -> dict:
     try:
@@ -27,7 +27,7 @@ def create_client() -> dict:
 
     except sqlalchemy.exc.IntegrityError as e:
         if type(e.orig) == psycopg2.errors.UniqueViolation:
-            return {'msg': 'Client already registered!'}, 400
+            return AlreadyRegisteredError("Client").message , 400
             
     except WrongTypeError as err:
         return err.message, 422
@@ -36,10 +36,13 @@ def create_client() -> dict:
         return err.message, 422
 
     except InvalidCnpjError as err:
-        return err.message, 422
+        return err.message, 400
     
     except WrongNumberFormatError as err:
         return err.message, 422
+
+    except InvalidEmailError as err:
+        return err.message, 400
 
 def update_client(id: int) -> dict:
     data = request.get_json()
