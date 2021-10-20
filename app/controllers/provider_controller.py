@@ -10,8 +10,7 @@ def create_provider():
 
     session = current_app.db.session
 
-    sigla_country = data['sigla_country'].pop()
-
+    sigla_country = data.pop('sigla_country')
     sigla_country = sigla_country.upper()
 
     if not data['phone'].isnumeric():
@@ -20,14 +19,14 @@ def create_provider():
     if not data['nif'].isnumeric():
         return {'message': 'NIF only contains numbers.'}, 400
 
-    country = Country.query.filter_by(sigla=sigla_country).one()
+    country = Country.query.filter_by(sigla=sigla_country).first()
+
+    if not country:
+        return {'message': 'This country not exists.'}, 400
 
     data['country_id'] = country.id
 
     provider = Provider(**data)
-
-    if not country:
-        return {'message': 'This country not exists.'}, 400
 
     session.add(provider)
     session.commit()
