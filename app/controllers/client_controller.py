@@ -9,9 +9,7 @@ from app.models.error_model import CityNotRegisteredError, InvalidCnpjError, Wro
 def create_client() -> dict:
     try:
         data = request.get_json()
-        ddd = data["ddd_city"]
-        
-        data = {key: data[key] for key in data if key != "ddd_city"}
+        ddd = data.pop("ddd_city")
         
         city_id =  City.query.filter_by(ddd = ddd).first()
         
@@ -21,9 +19,9 @@ def create_client() -> dict:
         data["city_id"] = city_id.id
 
         client = Client(**data)
-        """session = current_app.db.session
+        session = current_app.db.session
         session.add(client)
-        session.commit() """
+        session.commit()
 
         return jsonify(client), 201
 
@@ -64,7 +62,7 @@ def delete_client(id: int) -> dict:
     except sqlalchemy.orm.exc.UnmappedInstanceError:
         return {'msg': 'Client Not Found'}, 404
 
-def get_client():
+def get_client() -> dict:
     clients = Client.query.all()
     return {"data": [{
         "id": client.id,

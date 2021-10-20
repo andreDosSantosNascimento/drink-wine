@@ -12,5 +12,5 @@ class InvalidCnpjError(Exception):
 
 class WrongNumberFormatError(Exception):
     def __init__(self):
-        self.message = {"error": "Invalid number format, try this format: (xx)xxxx-xxxx"}
+        self.message = {"error": "Invalid phone number, only numbers expected!"}
         

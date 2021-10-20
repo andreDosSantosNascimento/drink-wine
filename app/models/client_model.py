@@ -7,8 +7,6 @@ from sqlalchemy.orm import backref, relationship, validates
 
 from app.models.error_model import InvalidCnpjError, WrongNumberFormatError, WrongTypeError
 
-import re
-
 @dataclass
 class Client(db.Model):
     id:int
@@ -37,14 +35,10 @@ class Client(db.Model):
         if key == "name":
             value = value.title()
         
-        if key == "cnpj" and len(value) != 14:
+        if key == "cnpj" and len(value) != 14 and not value.isnumeric():
             raise InvalidCnpjError
 
-        if key == "phone":
-            phone_pattern = "\(\d{2}\)\d{4,5}\-\d{4}"
-            number_format_valid = re.fullmatch(phone_pattern, value)
-            
-            if not number_format_valid:
-                raise WrongNumberFormatError
+        if key == "phone" and not value.isnumeric():
+            raise WrongNumberFormatError
 
         return value
