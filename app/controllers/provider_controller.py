@@ -12,7 +12,7 @@ def create_provider():
 
     sigla_country = data['sigla_country'].pop()
 
-    data['sigla_country'] = sigla_country.upper()
+    sigla_country = sigla_country.upper()
 
     if not data['phone'].isnumeric():
         return {'message': 'Phone only contains numbers.'}, 400
