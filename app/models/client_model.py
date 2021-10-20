@@ -2,7 +2,9 @@ from dataclasses import dataclass
 
 from app.configs.database import db
 from sqlalchemy import Column, ForeignKey, Integer, String
-from sqlalchemy.orm import backref, relationship
+from sqlalchemy.orm import backref, relationship, validates
+
+from app.models.erros_model import WrongTypeError
 
 
 @dataclass
@@ -23,3 +25,13 @@ class Client(db.Model):
     city_id = Column(Integer, ForeignKey('citys.id'), nullable=False)
 
     city = relationship('City', backref=backref('client', uselist=False))
+
+    @validates("name","email", "phone", "cnpj")
+    def validate_types(self, key, value):
+        
+        if type(value) != str:
+            raise WrongTypeError(key, "string")
+
+        if key == "name":
+            value = value.title()
+        return value

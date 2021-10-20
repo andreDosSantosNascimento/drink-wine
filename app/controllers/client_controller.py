@@ -1,11 +1,24 @@
+from app.models.city_model import City
 from app.models.client_model import Client
 import psycopg2
 import sqlalchemy
 from flask import current_app, jsonify, request
 
+from app.models.erros_model import CityNotRegisteredError, WrongTypeError
+
 def create_client() -> dict:
     try:
         data = request.get_json()
+        ddd = data["ddd"]
+        
+        data = {key: data[key] for key in data if key != "ddd"}
+        
+        city_id =  City.query.filter_by(ddd = ddd).first()
+        
+        if not city_id : 
+            raise CityNotRegisteredError
+        
+        data["city_id"] = city_id.id
 
         client = Client(**data)
         session = current_app.db.session
@@ -17,6 +30,12 @@ def create_client() -> dict:
     except sqlalchemy.exc.IntegrityError as e:
         if type(e.orig) == psycopg2.errors.UniqueViolation:
             return {'msg': 'Client already registered!'}, 400
+            
+    except WrongTypeError as err:
+        return err.message, 422
+
+    except CityNotRegisteredError as err:
+        return err.message, 422
 
 def update_client(id: int) -> dict:
     data = request.get_json()
