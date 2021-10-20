@@ -67,7 +67,7 @@ def create_city():
     except:
         return {'msg': 'Invalid State'}, 400
 
-    city_ddd = data['city_ddd']
+    city_ddd = data['ddd']
 
     city_dict = {
         'ddd': city_ddd,
