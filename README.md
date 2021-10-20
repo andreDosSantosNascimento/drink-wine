@@ -18,7 +18,7 @@ _Cria um País_
 
 ```json
 {
-  "sigla": "BRA",
+  "country_sigla": "BRA",
   "ddd": "+55"
 }
 ```
@@ -29,7 +29,7 @@ _Cria um Estado_
 
 ```json
 {
-  "sigla": "PR",
+  "state_sigla": "PR",
   "country_sigla": "BRA"
 }
 ```
