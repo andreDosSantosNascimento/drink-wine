@@ -16,8 +16,8 @@ def create_order():
 
     session = current_app.db.session
 
-    client = Client.filter_by(email=client_email).one()
-    provider = Provider.filter_by(email=provider_email).one()
+    client = Client.query.filter_by(email=client_email).one()
+    provider = Provider.query.filter_by(email=provider_email).one()
 
     data['client_id'] = client.id
     data['provider_id'] = provider.id
@@ -67,6 +67,8 @@ def update_order(id: int):
 
     if not order:
         return {'message': 'order not found!'}, 404
+
+    data['order_date'] = datetime.now()
 
     Order.query.filter_by(id=id).update(data)
 
