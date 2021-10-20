@@ -11,7 +11,6 @@ def create_provider():
     session = current_app.db.session
 
     sigla_country = data.pop('sigla_country')
-
     sigla_country = sigla_country.upper()
 
     if not data['phone'].isnumeric():
