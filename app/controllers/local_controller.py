@@ -1,5 +1,6 @@
-from flask import jsonify, request, current_app
 from app.models import city_model, country_model, state_model
+from flask import current_app, jsonify, request
+
 
 def create_country():
     data = request.json

@@ -5,8 +5,9 @@ from flask import current_app, jsonify, request
 
 
 def create_product() -> dict:
+    data = request.get_json()
     try:
-        data = request.get_json()
+        data['name'] = data['name'].upper()
 
         product = Product(**data)
         session = current_app.db.session
@@ -41,6 +42,7 @@ def delete_product(id: int) -> dict:
         return jsonify(product), 200
     except sqlalchemy.orm.exc.UnmappedInstanceError:
         return {'msg': 'Product Not Found'}, 404
+
 
 def get_products():
     products = Product.query.all()
