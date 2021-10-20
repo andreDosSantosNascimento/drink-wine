@@ -191,7 +191,7 @@ _Retorna todos os produtos cadastrados, não precisa de corpo e tem o seguinte r
       "name": "Vinho Cinza",
       "value": 550.5,
       "description": "Vinho do Chile Merlot",
-      "expiration_date": "23/02/2029"
+      "expiration_date": "2029/09/20"
     },
     {
       "name": "Vinho Bege",
