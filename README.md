@@ -187,15 +187,6 @@ _Cria um Pedido_
 }
 ```
 
-#### PATCH /api/orders/\<id:int>
-
-_Informação que deseja trocar sobre o Pedido pode ser passada, sendo ao menos uma das opções apresentadas no POST exceto produtos_
-
-```json
-{
-  "products": ["Vinho Azul", "Vinho Verde"]
-}
-```
 
 #### DELETE /api/orders/\<id:int>
 
