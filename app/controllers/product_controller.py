@@ -1,5 +1,6 @@
 import psycopg2
 import sqlalchemy
+from app.models.errors_product import InvalidOrderDateError, InvalidValueuError
 from app.models.product_model import Product
 from flask import current_app, jsonify, request
 
@@ -16,12 +17,11 @@ def create_product() -> dict:
 
         return jsonify(product), 201
 
-    except sqlalchemy.exc.IntegrityError as e:
-        if type(e.orig) == psycopg2.errors.UniqueViolation:
-            return {'msg': 'Product already registered!'}, 400
-    except sqlalchemy.exc.DataError as e:
-        if type(e.orig) == psycopg2.errors.DatetimeFieldOverflow:
-            return {'msg': 'Invalid date format! the correct is YYYY/MM/DD'}, 400
+    except InvalidValueuError as e:
+        return jsonify(e.message), 400
+
+    except InvalidOrderDateError as e:
+        return jsonify(e.message), 400
 
 
 def update_product(id: int) -> dict:

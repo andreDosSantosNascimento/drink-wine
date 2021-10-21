@@ -16,4 +16,3 @@ class Provider(db.Model):
     country = db.relationship('Country', backref=db.backref('providers'))
     country_id = Column(Integer, ForeignKey('countrys.id'), nullable=False)
     nif = Column(String(9), nullable=False, unique=True)
-
