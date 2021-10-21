@@ -1,8 +1,15 @@
-from app.models.error_model import AlreadyRegisteredError, CityNotRegisteredError, InvalidError, NotFound, WrongNumberFormatError, WrongTypeError
+from app.models.error_model import (
+    AlreadyRegisteredError,
+    CityNotRegisteredError,
+    InvalidError,
+    NotFound,
+    WrongNumberFormatError,
+    WrongTypeError
+    )
+
 from app.models.provider_model import Provider
 from app.models.country_model import Country
 from flask import current_app, jsonify, request
-from sqlalchemy.orm.exc import UnmappedInstanceError
 import sqlalchemy
 import psycopg2
 
@@ -45,6 +52,9 @@ def create_provider():
     except InvalidError as err:
         return err.message, 400
 
+    except TypeError:
+        return {"data": "Invalid keys detected"}, 422
+
 def delete_provider(id: int):
 
     try:
@@ -59,7 +69,7 @@ def delete_provider(id: int):
         session.commit()
 
         return '', 204
-        
+
     except NotFound as err:
         return err.message, 404
 
@@ -78,8 +88,12 @@ def update_provider(id: int):
         current_app.db.session.commit()
 
         updated_provider = Provider.query.get(id)
+
     except NotFound as err:
         return err.message, 404
+
+    except sqlalchemy.exc.InvalidRequestError:
+        return {"data": "Invalid keys detected"}, 422
 
     return jsonify(updated_provider), 200
 

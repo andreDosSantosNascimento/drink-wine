@@ -50,6 +50,9 @@ def create_client() -> dict:
 
     except InvalidError as err:
         return err.message, 400
+        
+    except sqlalchemy.exc.InvalidRequestError:
+        return {"data": "Invalid keys detected"}, 422
 
 def update_client(id: int) -> dict:
     try:
@@ -84,6 +87,9 @@ def update_client(id: int) -> dict:
 
     except NotFound as err:
         return err.message, 404
+    
+    except sqlalchemy.exc.InvalidRequestError:
+        return {"data": "Invalid keys detected"}, 422
 
 def delete_client(id: int) -> dict:
     try:
@@ -111,7 +117,7 @@ def get_client() -> dict:
         "city_id": client.city_id,
     } for client in clients]}
 
-def get_client_by_id(id: int):
+def get_client_by_id(id: int) -> dict:
     try:
         client = Client.query.get(id)
 
