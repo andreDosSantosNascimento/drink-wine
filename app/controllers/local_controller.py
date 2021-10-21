@@ -73,9 +73,11 @@ def create_city():
         'ddd': city_ddd,
         'id_state': id_state
     }
-
-    city = city_model.City(**city_dict)
-    current_app.db.session.add(city)
-    current_app.db.session.commit()
+    try:
+        city = city_model.City(**city_dict)
+        current_app.db.session.add(city)
+        current_app.db.session.commit()
+    except:
+        return{'msg': 'City already exists'}
 
     return jsonify(city), 201
