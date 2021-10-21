@@ -1,14 +1,17 @@
 import psycopg2
 import sqlalchemy
+from app.models.check_model import Check
 from app.models.errors_product import InvalidOrderDateError, InvalidValueuError
 from app.models.product_model import Product
 from flask import current_app, jsonify, request
+from app.models.error_model import AlreadyRegisteredError, MissingKeyError, WrongKeysError
 
 
 def create_product() -> dict:
+    EXPECTED_KEYS = ["name", "value", "description", "expiration_date"]
     data = request.get_json()
     try:
-        data['name'] = data['name'].upper()
+        Check.keys(EXPECTED_KEYS, data.keys())
 
         product = Product(**data)
         session = current_app.db.session
@@ -22,6 +25,14 @@ def create_product() -> dict:
 
     except InvalidOrderDateError as e:
         return jsonify(e.message), 400
+    except sqlalchemy.exc.IntegrityError as e:
+        if type(e.orig) == psycopg2.errors.UniqueViolation:
+            return AlreadyRegisteredError("Product").message , 400
+    except MissingKeyError as err:
+        return err.message, 422
+    except WrongKeysError as err:
+        return err.message, 422  
+    
 
 
 def update_product(id: int) -> dict:
