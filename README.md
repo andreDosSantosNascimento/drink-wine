@@ -193,7 +193,7 @@ _Informação que deseja trocar sobre o Pedido pode ser passada, sendo ao menos 
 
 ```json
 {
-  "provider_email": "arg_wines@mail.com"
+  "products": ["Vinho Azul", "Vinho Verde"]
 }
 ```
 
