@@ -25,3 +25,12 @@ class AlreadyRegisteredError(Exception):
 class NotFound(Exception):
     def __init__(self, this = ""):
         self.message = {"error": f"{this}Not found!"}
+
+class WrongKeysError(Exception):
+    def __init__(self, wrong_keys):
+        self.message = {"wrong_keys": wrong_keys}
+
+
+class MissingKeyError(Exception):
+    def __init__(self, missing_keys):
+        self.message = {"missing_keys": missing_keys}

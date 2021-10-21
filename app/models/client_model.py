@@ -6,6 +6,7 @@ from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import backref, relationship, validates
 
 from app.models.error_model import InvalidEmailError, InvalidError, WrongNumberFormatError, WrongTypeError
+from app.models.order_model import Order
 
 @dataclass
 class Client(db.Model):
@@ -23,6 +24,10 @@ class Client(db.Model):
     phone = Column(String(100), unique=True)
     cnpj = Column(String(100), nullable=False, unique=True)
     city_id = Column(Integer, ForeignKey('citys.id'), nullable=False)
+
+    order = relationship(
+        'Order', cascade="all, delete, delete-orphan"
+    )
 
     city = relationship('City', backref=backref('client', uselist=False))
 

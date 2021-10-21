@@ -6,13 +6,17 @@ from app.models.product_model import Product
 from app.models.provider_model import Provider
 from flask import current_app, jsonify, request
 from sqlalchemy.orm.exc import UnmappedInstanceError
-
-from app.models.error_model import NotFound
+from app.models.check_model import Check
+from app.models.error_model import MissingKeyError, NotFound, WrongKeysError
 
 
 def create_order():
+    EXPECTED_KEYS = ["client_email", "provider_email", "products"]
     try:
         data = request.json
+
+        Check.keys(EXPECTED_KEYS, data.keys())
+
         client_email = data.pop('client_email')
         provider_email = data.pop('provider_email')
 
@@ -50,6 +54,10 @@ def create_order():
         return jsonify(order), 201
     except NotFound as err:
         return err.message, 404
+    except MissingKeyError as err:
+        return err.message, 422
+    except WrongKeysError as err:
+        return err.message, 422
 
 
 def delete_order(id: int):
@@ -66,22 +74,19 @@ def delete_order(id: int):
     except UnmappedInstanceError:
         return {'message': 'order not found!'}, 404
 
+def get_order():
+    orders = Order.query.all()
 
-def update_order(id: int):
+    return {"data": orders}, 200
 
-    data = request.json
+def get_order_by_id(id:int):
+    try:
+        order = Order.query.get(id)
 
-    order = Order.query.get(id)
+        if not order:
+            raise NotFound("Order ")
+        
+        return {"data": order}
+    except NotFound as err:
+        return err.message, 404
 
-    if not order:
-        return {'message': 'order not found!'}, 404
-
-    data['order_date'] = datetime.now()
-
-    Order.query.filter_by(id=id).update(data)
-
-    current_app.db.session.commit()
-
-    updated_order = Order.query.get(id)
-
-    return jsonify(updated_order), 200

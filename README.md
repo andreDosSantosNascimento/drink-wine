@@ -187,19 +187,61 @@ _Cria um Pedido_
 }
 ```
 
-#### PATCH /api/orders/\<id:int>
-
-_Informação que deseja trocar sobre o Pedido pode ser passada, sendo ao menos uma das opções apresentadas no POST exceto produtos_
-
-```json
-{
-  "provider_email": "arg_wines@mail.com"
-}
-```
 
 #### DELETE /api/orders/\<id:int>
 
 _Quando você faz o delete não precisa do corpo da requisição com informações, apenas o ID do Pedido que deseja retirar_
+
+
+#### GET /api/orders
+
+_Retorna a lista de Pedidos cadastrados, não precisa de corpo e tem o seguinte retorno_
+
+```json
+{
+  "data": [
+    {
+      "id": 1,
+      "order_date": "Wed, 20 Oct 2021 00:00:00 GMT",
+      "provider_id": 1,
+      "client_id": 46,
+      "products": [
+        {
+          "id": 5,
+          "name": "vinho",
+          "value": 30.0,
+          "description": "É bom!",
+          "expiration_date": "Sat, 15 Oct 2050 00:00:00 GMT"
+        }
+      ]
+    }
+  ]
+}
+```
+
+#### GET /api/orders/\<id:int>
+
+_Retorna o Pedido cadastrado, não precisa de corpo e tem o seguinte retorno_
+
+```json
+{
+  "data": {
+    "id": 1,
+    "order_date": "Wed, 20 Oct 2021 00:00:00 GMT",
+    "provider_id": 1,
+    "client_id": 46,
+    "products": [
+      {
+        "id": 5,
+        "name": "vinho",
+        "value": 30.0,
+        "description": "É bom!",
+        "expiration_date": "Sat, 15 Oct 2050 00:00:00 GMT"
+      }
+    ]
+  }
+}
+```
 
 ### PRODUCTS:
 

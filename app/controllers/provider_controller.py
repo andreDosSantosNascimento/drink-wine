@@ -1,12 +1,15 @@
+from app.models.check_model import Check
 from app.models.error_model import (
     AlreadyRegisteredError,
     CityNotRegisteredError,
     InvalidError,
+    MissingKeyError,
     NotFound,
+    WrongKeysError,
     WrongNumberFormatError,
     WrongTypeError
     )
-
+from sqlalchemy.exc import DataError
 from app.models.provider_model import Provider
 from app.models.country_model import Country
 from flask import current_app, jsonify, request
@@ -15,8 +18,11 @@ import psycopg2
 
 
 def create_provider():
+    EXPECTED_KEYS = [	"name", "email", "phone", "nif", "sigla_country"]
     try:
         data = request.json
+
+        Check.keys(EXPECTED_KEYS, data.keys())
 
         session = current_app.db.session
 
@@ -24,6 +30,9 @@ def create_provider():
         sigla_country = sigla_country.upper()
 
         country = Country.query.filter_by(sigla=sigla_country).first()
+
+        if not country:
+            raise NotFound("Country ")
 
         data['country_id'] = country.id
 
@@ -49,11 +58,29 @@ def create_provider():
     except WrongNumberFormatError as err:
         return err.message, 422
 
+    except NotFound as err:
+        return err.message, 404
+
     except InvalidError as err:
         return err.message, 400
+    
+    except MissingKeyError as err:
+        return err.message, 422
+
+    except WrongKeysError as err:
+        return err.message, 422
 
     except TypeError:
         return {"data": "Invalid keys detected"}, 422
+
+    except DataError:
+        return InvalidError("nif").message, 422
+
+    except MissingKeyError as err:
+        return err.message, 422
+
+    except WrongKeysError as err:
+        return err.message, 422  
 
 def delete_provider(id: int):
 
