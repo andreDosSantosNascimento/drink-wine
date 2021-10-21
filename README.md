@@ -75,6 +75,31 @@ _Qualquer informação que deseja trocar sobre o Fornecedor pode ser passada, se
 
 _Quando você faz o delete não precisa do corpo da requisição com informações, apenas o ID do Fornecedor que deseja retirar_
 
+#### GET /api/provider
+
+_Retorna a lista de Fornecedores cadastrados, não precisa de corpo e tem o seguinte retorno_
+
+```json
+{
+  "data": [
+    {
+      "name": "ChiWines",
+      "email": "contato@chiwines.com",
+      "phone": "56612666666",
+      "sigla_country": "CHI",
+      "nif": "123456789"
+    },
+    {
+      "name": "ArgWines",
+      "email": "contato@argwines.com",
+      "phone": "56612878787",
+      "sigla_country": "ARG",
+      "nif": "234567891"
+    }
+  ]
+}
+```
+
 ### CLIENT:
 
 #### POST /api/client
@@ -104,6 +129,31 @@ _Qualquer informação que deseja trocar sobre o Cliente pode ser passada, sendo
 #### DELETE /api/client/\<id:int>
 
 _Quando você faz o delete não precisa do corpo da requisição com informações, apenas o ID do Cliente que deseja retirar_
+
+#### GET /api/client
+
+_Retorna a lista de Clientes cadastrados, não precisa de corpo e tem o seguinte retorno_
+
+```json
+{
+  "data": [
+    {
+      "name": "Pizzaria Verde",
+      "email": "contato@pizzaverde.com",
+      "phone": "5541999999999",
+      "ddd_city": "041",
+      "cnpj": "00111222000133"
+    },
+    {
+      "name": "Pizzaria Azul",
+      "email": "contato@pizzaazul.com",
+      "phone": "5541988888888",
+      "ddd_city": "041",
+      "cnpj": "00111222000144"
+    }
+  ]
+}
+```
 
 #### GET /api/client/\<id:int>
 
