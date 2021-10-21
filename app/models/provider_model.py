@@ -10,6 +10,14 @@ from app.models.error_model import InvalidCnpjError, InvalidEmailError, WrongNum
 
 @dataclass
 class Provider(db.Model):
+
+    id: int
+    name: str
+    email: str
+    phone: str
+    country_id: int
+    nif: str
+
     __tablename__ = 'providers'
 
     id = Column(Integer, primary_key=True)

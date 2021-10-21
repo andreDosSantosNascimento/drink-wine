@@ -112,5 +112,14 @@ def get_client() -> dict:
         "city_id": client.city_id,
     } for client in clients]}
 
+def get_client_by_id(id: int):
+    try:
+        client = Client.query.get(id)
 
+        if not client:
+            raise NotFound
+
+        return jsonify({"data": client})
+    except NotFound as err:
+        return err.message, 404
 
