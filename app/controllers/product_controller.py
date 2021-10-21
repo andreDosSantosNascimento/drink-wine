@@ -53,7 +53,7 @@ def delete_product(id: int) -> dict:
         product = Product.query.get(id)
         current_app.db.session.delete(product)
         current_app.db.session.commit()
-        return jsonify(product), 200
+        return jsonify(product), 204
     except sqlalchemy.orm.exc.UnmappedInstanceError:
         return {'msg': 'Product Not Found'}, 404
 
