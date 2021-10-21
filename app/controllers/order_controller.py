@@ -7,41 +7,49 @@ from app.models.provider_model import Provider
 from flask import current_app, jsonify, request
 from sqlalchemy.orm.exc import UnmappedInstanceError
 
+from app.models.error_model import NotFound
+
 
 def create_order():
+    try:
+        data = request.json
+        client_email = data.pop('client_email')
+        provider_email = data.pop('provider_email')
 
-    data = request.json
-    client_email = data.pop('client_email')
-    provider_email = data.pop('provider_email')
+        session = current_app.db.session
 
-    session = current_app.db.session
+        client = Client.query.filter_by(email=client_email).first()
 
-    client = Client.query.filter_by(email=client_email).one()
-    provider = Provider.query.filter_by(email=provider_email).one()
+        if not client:
+            raise NotFound("Client ")
+        provider = Provider.query.filter_by(email=provider_email).first()
 
-    data['client_id'] = client.id
-    data['provider_id'] = provider.id
+        if not provider:
+            raise NotFound("Provider ")
 
-    data['order_date'] = datetime.now()
+        data['client_id'] = client.id
+        data['provider_id'] = provider.id
 
-    products = data.pop('products')
+        data['order_date'] = datetime.now()
 
-    order = Order(**data)
+        products = data.pop('products')
 
-    for product in products:
-        db_product = Product.query.filter_by(name=product['name']).first()
-    
-        if not db_product:
-            db_product = Product(**product)
-            session.add(db_product)
-            session.commit()
+        order = Order(**data)
 
-        order.products.append(db_product)
+        for product in products:
+            db_product = Product.query.filter_by(name=product.upper()).first()
+        
+            if not db_product:
+                raise NotFound("Product ")
 
-    session.add(order)
-    session.commit()
+            order.products.append(db_product)
 
-    return jsonify(order), 201
+        session.add(order)
+        session.commit()
+
+        return jsonify(order), 201
+    except NotFound as err:
+        return err.message, 404
 
 
 def delete_order(id: int):
