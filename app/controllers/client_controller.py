@@ -8,14 +8,21 @@ from app.models.error_model import (
     AlreadyRegisteredError,
     CityNotRegisteredError,
     InvalidError,
+    MissingKeyError,
+    WrongKeysError,
     WrongNumberFormatError,
     WrongTypeError,
     NotFound
     )
+from app.models.check_model import Check
 
 def create_client() -> dict:
+    EXPECTED_KEYS = ["name", "email", "phone", "cnpj", "ddd_city"]
     try:
         data = request.get_json()
+
+        Check.keys(EXPECTED_KEYS, data.keys())
+
         ddd = data.pop("ddd_city")
         
         city_id =  City.query.filter_by(ddd = ddd).first()
@@ -50,6 +57,10 @@ def create_client() -> dict:
 
     except InvalidError as err:
         return err.message, 400
+    except MissingKeyError as err:
+        return err.message, 422
+    except WrongKeysError as err:
+        return err.message, 422
         
     except sqlalchemy.exc.InvalidRequestError:
         return {"data": "Invalid keys detected"}, 422

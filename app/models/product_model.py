@@ -32,7 +32,7 @@ class Product(db.Model):
     def validate_types(self, key, value):
 
         if key == 'name':
-            value = value.title()
+            value = value.upper()
 
         if key == 'value' and type(value) is not float or not int:
             raise InvalidValueuError
@@ -42,3 +42,4 @@ class Product(db.Model):
                 datetime.strptime(value, '%Y/%m/%d')
             except:
                 raise InvalidOrderDateError
+        return value
