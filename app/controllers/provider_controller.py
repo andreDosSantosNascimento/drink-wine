@@ -9,7 +9,7 @@ from app.models.error_model import (
     WrongNumberFormatError,
     WrongTypeError
     )
-
+from sqlalchemy.exc import DataError
 from app.models.provider_model import Provider
 from app.models.country_model import Country
 from flask import current_app, jsonify, request
@@ -72,6 +72,9 @@ def create_provider():
 
     except TypeError:
         return {"data": "Invalid keys detected"}, 422
+
+    except DataError:
+        return InvalidError("nif").message, 422
 
     except MissingKeyError as err:
         return err.message, 422
