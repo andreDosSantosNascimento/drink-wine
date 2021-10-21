@@ -6,6 +6,7 @@ from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import backref, relationship
 
 from app.models.error_model import InvalidError, InvalidEmailError, WrongNumberFormatError, WrongTypeError
+from app.models.order_model import Order
 
 
 @dataclass
@@ -27,6 +28,10 @@ class Provider(db.Model):
     country = db.relationship('Country', backref=db.backref('providers'))
     country_id = Column(Integer, ForeignKey('countrys.id'), nullable=False)
     nif = Column(String(9), nullable=False, unique=True)
+
+    order = relationship(
+        'Order', cascade="all, delete, delete-orphan"
+    )
 
     @validates("name","email", "phone", "nif")
     def validate_types(self, key, value):
