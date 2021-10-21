@@ -212,7 +212,7 @@ _Cria um Produto_
   "name": "Vinho Cinza",
   "value": 550.5,
   "description": "Vinho do Chile Merlot",
-  "expiration_date": "23/02/2029"
+  "expiration_date": "2029/09/29"
 }
 ```
 
@@ -247,13 +247,13 @@ _Retorna todos os produtos cadastrados, não precisa de corpo e tem o seguinte r
       "name": "Vinho Bege",
       "value": 1000,
       "description": "Vinho da Argentina Merlot",
-      "expiration_date": "23/02/2029"
+      "expiration_date": "2029/09/29"
     },
     {
       "name": "Vinho Celeste",
       "value": 30.99,
       "description": "Vinho do Argentino Cabernet Sauvignon",
-      "expiration_date": "23/02/2029"
+      "expiration_date": "2029/09/29"
     }
   ]
 }
