@@ -21,3 +21,7 @@ class InvalidEmailError(Exception):
 class AlreadyRegisteredError(Exception):
     def __init__(self, this):
         self.message = {"error": f"{this} already registered!"}
+
+class NotFound(Exception):
+    def __init__(self):
+        self.message = {"error": "Not found!"}
