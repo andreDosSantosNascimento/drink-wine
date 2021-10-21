@@ -6,9 +6,9 @@ class CityNotRegisteredError(Exception):
     def __init__(self):
         self.message = {"error": "City not registered."}
 
-class InvalidCnpjError(Exception):
-    def __init__(self):
-        self.message = {"error": "This cnpj is not valid."}
+class InvalidError(Exception):
+    def __init__(self, this):
+        self.message = {"error": f"This {this} is not valid."}
 
 class WrongNumberFormatError(Exception):
     def __init__(self):

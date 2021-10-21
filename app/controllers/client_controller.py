@@ -7,8 +7,7 @@ from flask import current_app, jsonify, request
 from app.models.error_model import (
     AlreadyRegisteredError,
     CityNotRegisteredError,
-    InvalidCnpjError,
-    InvalidEmailError,
+    InvalidError,
     WrongNumberFormatError,
     WrongTypeError,
     NotFound
@@ -43,13 +42,13 @@ def create_client() -> dict:
     except CityNotRegisteredError as err:
         return err.message, 422
 
-    except InvalidCnpjError as err:
+    except InvalidError as err:
         return err.message, 400
     
     except WrongNumberFormatError as err:
         return err.message, 422
 
-    except InvalidEmailError as err:
+    except InvalidError as err:
         return err.message, 400
 
 def update_client(id: int) -> dict:

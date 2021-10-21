@@ -5,7 +5,7 @@ from app.configs.database import db
 from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import backref, relationship
 
-from app.models.error_model import InvalidCnpjError, InvalidEmailError, WrongNumberFormatError, WrongTypeError
+from app.models.error_model import InvalidError, InvalidEmailError, WrongNumberFormatError, WrongTypeError
 
 
 @dataclass
@@ -38,7 +38,7 @@ class Provider(db.Model):
             value = value.title()
         
         if key == "nif" and not value.isnumeric():
-            raise InvalidCnpjError
+            raise InvalidError("nif")
 
         if key == "phone" and not value.isnumeric():
             raise WrongNumberFormatError
